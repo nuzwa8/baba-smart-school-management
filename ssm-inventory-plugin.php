@@ -857,20 +857,187 @@ final class SSM_Inventory_Plugin {
         echo '</template>';
     }
 
-    /**
+/**
      * Renders the Rate Plans page.
      * (Rule 6: Must have root div and template)
      */
     public function render_admin_page_rate_plans() {
-        // Root div for JS app
-        echo '<div id="ssm-rate-plans-root" class="ssm-root" data-screen="rate-plans"></div>';
-
+        // Root div for JS app (Rule 6)
+        echo '<div id="ssm-rate-plans-root" class="ssm-root" data-screen="rate-plans">';
+        echo '</div>'; // JS app will mount here
+        
         // Full page template (Rule 6)
         echo '<template id="ssm-rate-plans-template">';
-        echo '<div>Loading Rate Plans Page...</div>'; // Placeholder
+        ?>
+        <div class="ssm-page-wrapper">
+            
+            <header class="ssm-page-header">
+                <div class="ssm-header-left">
+                    <h1><?php _e( 'Rate Plans', 'ssm-inventory' ); ?></h1>
+                    <p><?php _e( 'Define, manage, and categorize rates for unit types.', 'ssm-inventory' ); ?></p>
+                </div>
+                <div class="ssm-header-right">
+                    <button class="ssm-button ssm-button-primary ssm-button-add-new">
+                        <?php _e( 'Add Unit Type (Rate Plan)', 'ssm-inventory' ); // Text from layout ?>
+                    </button>
+                </div>
+            </header>
+            <div class="ssm-stat-card-row">
+                <div class="ssm-stat-card">
+                    <div class="ssm-stat-card-icon" style="--icon-bg: #e0f2fe;">
+                        </div>
+                    <div class="ssm-stat-card-info">
+                        <span class="ssm-stat-card-title"><?php _e( 'Total Rate Plans', 'ssm-inventory' ); ?></span>
+                        <span class="ssm-stat-card-value">12 <small><?php _e( 'Active', 'ssm-inventory' ); ?></small></span>
+                    </div>
+                </div>
+                <div class="ssm-stat-card">
+                    <div class="ssm-stat-card-icon" style="--icon-bg: #fef9c3;">
+                        </div>
+                    <div class="ssm-stat-card-info">
+                        <span class="ssm-stat-card-title"><?php _e( 'Linked Unit Types', 'ssm-inventory' ); ?></span>
+                        <span class="ssm-stat-card-value">5 <small><?php _e( 'Available', 'ssm-inventory' ); ?></small></span>
+                    </div>
+                </div>
+                <div class.ssm-stat-card">
+                    <div class="ssm-stat-card-icon" style="--icon-bg: #fce7f3;">
+                        </div>
+                    <div class="ssm-stat-card-info">
+                        <span class="ssm-stat-card-title"><?php _e( 'Linked Pricing', 'ssm-inventory' ); ?></span>
+                        <span class="ssm-stat-card-value">8 <small><?php _e( 'Active', 'ssm-inventory' ); ?></small></span>
+                    </div>
+                </div>
+                <div class="ssm-stat-card">
+                    <div class="ssm-stat-card-icon" style="--icon-bg: #ede9fe;">
+                        </div>
+                    <div class="ssm-stat-card-info">
+                        <span class="ssm-stat-card-title"><?php _e( 'Pending Drafts', 'ssm-inventory' ); ?></span>
+                        <span class="ssm-stat-card-value">8 <small><?php _e( 'Drafts', 'ssm-inventory' ); ?></small></span>
+                    </div>
+                </div>
+            </div>
+            <div class="ssm-page-content-grid ssm-grid-with-sidebar">
+                
+                <div class="ssm-grid-main">
+                    <section class="ssm-card ssm-card-table">
+                        <div class="ssm-table-header">
+                             <div class="ssm-table-controls">
+                                <input type="search" placeholder="<?php _e( 'Search Rate Plans / (mutils)', 'ssm-inventory' ); ?>" class="ssm-search-input">
+                                <button class="ssm-button-tertiary"><?php _e( 'Search', 'ssm-inventory' ); ?></button>
+                            </div>
+                        </div>
+                        <div class="ssm-table-search-bar">
+                             <button class="ssm-button-tertiary"><?php _e( 'Sealants', 'ssm-inventory' ); ?></button>
+                             <button class="ssm-button-tertiary"><?php _e( 'Type', 'ssm-inventory' ); ?></button>
+                             <button class="ssm-button-tertiary"><?php _e( 'Status Rule', 'ssm-inventory' ); ?></button>
+                             <button class="ssm-button-tertiary"><?php _e( 'Imigrat Actions', 'ssm-inventory' ); ?></button>
+                             <button class="ssm-button-icon">+</button>
+                        </div>
+
+                        <table class="ssm-table">
+                            <thead>
+                                <tr>
+                                    <th><?php _e( 'ID', 'ssm-inventory' ); ?></th>
+                                    <th><?php _e( 'Rate Plan Name', 'ssm-inventory' ); ?></th>
+                                    <th><?php _e( '(english)', 'ssm-inventory' ); ?></th>
+                                    <th><?php _e( 'Type', 'ssm-inventory' ); ?></th>
+                                    <th><?php _e( 'Unit Type', 'ssm-inventory' ); ?></th>
+                                    <th><?php _e( 'Status', 'ssm-inventory' ); ?></th>
+                                    <th><?php _e( 'Actions', 'ssm-inventory' ); ?></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td><?php _e( 'Studio', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( 'Studio', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( 'Residential', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( '2 Guests', 'ssm-inventory' ); ?></td>
+                                    <td><button class="ssm-button-link"><?php _e( 'View Details', 'ssm-inventory' ); ?></button></td>
+                                    <td class="ssm-table-actions">
+                                        <input type="checkbox" class="ssm-checkbox-toggle" checked>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td><?php _e( 'Shop Monthly', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( 'Shop Monthly', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( 'Commercial', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( '50 Seats', 'ssm-inventory' ); ?></td>
+                                    <td><button class="ssm-button-link"><?php _e( 'View Details', 'ssm-inventory' ); ?></button></td>
+                                    <td class="ssm-table-actions">
+                                        <input type="checkbox" class="ssm-checkbox-toggle" checked>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td><?php _e( 'Hourly', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( 'Hourly', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( 'Event', 'ssm-inventory' ); ?></td>
+                                    <td><?php _e( '200 Guests', 'ssm-inventory' ); ?></td>
+                                    <td><span class="ssm-badge-outline"><?php _e( '70% Deals', 'ssm-inventory' ); ?></span></td>
+                                    <td class="ssm-table-actions">
+                                        <input type="checkbox" class="ssm-checkbox-toggle">
+                                    </td>
+                                </tr>
+                                 </tbody>
+                        </table>
+                        </section>
+                </div> <div class="ssm-grid-sidebar">
+                    <section class="ssm-card ssm-form-sidebar">
+                        <div class="ssm-form-sidebar-header">
+                            <h3><?php _e( 'Edit Rate Plan', 'ssm-inventory' ); ?></h3>
+                            </div>
+                        <div class="ssm-form-sidebar-content">
+                            <div class="ssm-form-field">
+                                <label><?php _e( 'Rate Plan Name (Urdu)', 'ssm-inventory' ); ?></label>
+                                <input type="checkbox" id="ssm-rate-urdu-toggle" class="ssm-checkbox-toggle" checked>
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-rate-name-urdu"><?php _e( 'Type Detail rules', 'ssm-inventory' ); ?></label>
+                                <textarea id="ssm-rate-name-urdu" rows="5">JINSP -- UI
+...
+...
+...
+</textarea>
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-preview-final-price"><?php _e( 'Preview Final Flat Price (Stop andre klatpr)', 'ssm-inventory' ); ?></label>
+                                <input type="text" id="ssm-preview-final-price" readonly>
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-effective-from"><?php _e( 'Effective From / To', 'ssm-inventory' ); ?></label>
+                                <input type="text" id="ssm-effective-from">
+                            </div>
+                            
+                            <div class="ssm-form-field">
+                                <label><?php _e( 'Custom Attributes', 'ssm-inventory' ); ?></label>
+                                <div class="ssm-image-grid-preview">
+                                    <div classimg-placeholder"></div>
+                                    <div class="ssm-img-placeholder"></div>
+                                    <div class="ssm-img-placeholder"></div>
+                                    <div class="ssm-img-placeholder"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ssm-form-sidebar-footer">
+                            <button class="ssm-button ssm-button-primary"><?php _e( 'Save Unit (Rate)', 'ssm-inventory' ); ?></button>
+                            <button class="ssm-button ssm-button-tertiary"><?php _e( 'Cancel', 'ssm-inventory' ); ?></button>
+                        </div>
+                    </section>
+                    </div>
+
+            </div> <footer class="ssm-page-footer">
+                <span><?php _e( 'Last updated just now', 'ssm-inventory' ); ?></span>
+                <div class="ssm-footer-actions">
+                    <button class="ssm-button ssm-button-primary"><?php _e( 'Save All Changes', 'ssm-inventory' ); ?></button>
+                    <button class="ssm-button ssm-button-tertiary"><?php _e( 'Discard', 'ssm-inventory' ); ?></button>
+                    <button class="ssm-button ssm-button-link"><?php _e( 'Reset to Defaults', 'ssm-inventory' ); ?></button>
+                </div>
+            </footer>
+            </div> <?php
         echo '</template>';
     }
-
     // 🔴 یہاں پر [Admin Page Render Functions] ختم ہو رہا ہے
 
 }
