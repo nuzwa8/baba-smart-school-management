@@ -179,17 +179,289 @@ final class SSM_Inventory_Plugin {
         echo '</template>';
     }
 
-    /**
-     * Renders the Units page.
+/**
+     * Renders the General Settings page.
      * (Rule 6: Must have root div and template)
      */
-    public function render_admin_page_units() {
-        // Root div for JS app
-        echo '<div id="ssm-units-root" class="ssm-root" data-screen="units"></div>';
-
+    public function render_admin_page_settings() {
+        // Root div for JS app (Rule 6)
+        echo '<div id="ssm-settings-root" class="ssm-root" data-screen="settings">';
+        echo '</div>'; // JS app will mount here
+        
         // Full page template (Rule 6)
-        echo '<template id="ssm-units-template">';
-        echo '<div>Loading Units Page...</div>'; // Placeholder
+        echo '<template id="ssm-settings-template">';
+        ?>
+        <div class="ssm-page-wrapper">
+            
+            <header class="ssm-page-header">
+                <div class="ssm-header-left">
+                    <h1><?php _e( 'General Settings', 'ssm-inventory' ); ?></h1>
+                    <p><?php _e( 'Manage global settings, language, branding, and API keys.', 'ssm-inventory' ); ?></p>
+                </div>
+                <div class="ssm-header-right">
+                    <a href="#" class="ssm-button ssm-button-secondary"><?php _e( 'View Documentation', 'ssm-inventory' ); ?></a>
+                    <button class="ssm-button ssm-button-primary" disabled>
+                        <?php _e( 'Settings saved', 'ssm-inventory' ); ?>
+                    </button>
+                </div>
+            </header>
+            <div class="ssm-page-content-grid">
+                
+                <div class="ssm-grid-main">
+
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Language & Locale', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-grid ssm-grid-cols-2">
+                            <div class="ssm-form-field">
+                                <label><?php _e( 'Default Content Language', 'ssm-inventory' ); ?></label>
+                                <div class="ssm-toggle-switch">
+                                    <span><?php _e( 'English', 'ssm-inventory' ); ?></span>
+                                    <input type="checkbox" id="ssm-lang-toggle" class="ssm-toggle-input">
+                                    <label for="ssm-lang-toggle" class="ssm-toggle-label"></label>
+                                    <span><?php _e( 'Urdu', 'ssm-inventory' ); ?></span>
+                                </div>
+                            </div>
+                            <div class="ssm-form-field">
+                                </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-timezone"><?php _e( 'Timezone', 'ssm-inventory' ); ?></label>
+                                <select id="ssm-timezone">
+                                    <option value="PK"><?php _e( 'PKT (Asia/Karachi)', 'ssm-inventory' ); ?></option>
+                                    </select>
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-date-format"><?php _e( 'Date Format', 'ssm-inventory' ); ?></label>
+                                <input type="text" id="ssm-date-format" value="2023-11-08">
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-currency"><?php _e( 'Currency', 'ssm-inventory' ); ?></label>
+                                <input type="text" id="ssm-currency" value="PKR">
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-digits"><?php _e( 'English Digits (0-9)', 'ssm-inventory' ); ?></label>
+                                <input type="checkbox" id="ssm-digits" class="ssm-checkbox">
+                            </div>
+                        </div>
+                        <p class="ssm-field-description">
+                            <?php _e( 'Labels include Urdu/English for data entry clarity. This switch defines the default visitor-facing language.', 'ssm-inventory' ); ?>
+                        </p>
+                    </section>
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Branding', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-grid ssm-grid-cols-2">
+                             <div class="ssm-form-field">
+                                <label><?php _e( 'Logo Maps', 'ssm-inventory' ); ?></label>
+                                <div class="ssm-image-uploader">
+                                    <img src="" alt="logo preview" class="ssm-logo-preview">
+                                    <span><?php _e( 'Ethics.jpg (800x800 avif)', 'ssm-inventory' ); ?></span>
+                                    <button class="ssm-button-tertiary"><?php _e( 'Change', 'ssm-inventory' ); ?></button>
+                                </div>
+                            </div>
+                            <div class="ssm-form-field">
+                                <label><?php _e( 'Google Map Pin', 'ssm-inventory' ); ?></label>
+                                <div class="ssm-image-uploader">
+                                    <img src="" alt="map pin preview" class="ssm-map-pin-preview">
+                                    <span><?php _e( 'Google Maps Pin', 'ssm-inventory' ); ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ssm-form-field">
+                            <input type="checkbox" id="ssm-apply-default-logo" class="ssm-checkbox">
+                            <label for="ssm-apply-default-logo"><?php _e( 'Applies as default public placeholder for new Rate Plans', 'ssm-inventory' ); ?></label>
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Global Theme consistency (lesser)', 'ssm-inventory' ); ?></label>
+                            <input type="text" value="[ssm_theme_consistency_shortcode]">
+                        </div>
+                    </section>
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Contact & Support', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-grid ssm-grid-cols-2">
+                            <div class="ssm-form-field">
+                                <label for="ssm-country"><?php _e( 'Country', 'ssm-inventory' ); ?></label>
+                                <select id="ssm-country">
+                                    <option><?php _e( 'Pakistan', 'ssm-inventory' ); ?></option>
+                                </select>
+                            </div>
+                            <div class="ssm-form-field ssm-form-group-inline">
+                                <div class="ssm-form-field">
+                                    <label for="ssm-mightly"><?php _e( 'Mightly (ants)', 'ssm-inventory' ); ?></label>
+                                    <input type="text" id="ssm-mightly">
+                                </div>
+                                <div class="ssm-form-field">
+                                    <label for="ssm-nestest"><?php _e( 'Nestest', 'ssm-inventory' ); ?></label>
+                                    <input type="text" id="ssm-nestest">
+                                </div>
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-city"><?php _e( 'City', 'ssm-inventory' ); ?></label>
+                                <input type="text" id="ssm-city">
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-default-tax"><?php _e( 'Default Tax %', 'ssm-inventory' ); ?></label>
+                                <input type="number" id="ssm-default-tax" class="ssm-input-small">
+                                <input type="checkbox" id="ssm-tax-toggle" class="ssm-checkbox">
+                            </div>
+                            <div class="ssm-form-field ssm-col-span-2">
+                                <label for="ssm-street-address"><?php _e( 'Street Address', 'ssm-inventory' ); ?></label>
+                                <input type="text" id="ssm-street-address">
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-email"><?php _e( 'Email', 'ssm-inventory' ); ?></label>
+                                <input type="email" id="ssm-email">
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-directing-rule"><?php _e( 'Directing rule', 'ssm-inventory' ); ?></label>
+                                <input type="text" id="ssm-directing-rule">
+                            </div>
+                            <div class="ssm-form-field">
+                                <label for="ssm-website-url"><?php _e( 'Website URL', 'ssm-inventory' ); ?></label>
+                                <input type="url" id="ssm-website-url">
+                            </div>
+                             <div class="ssm-form-field">
+                                <label for="ssm-social-link"><?php _e( 'Social link', 'ssm-inventory' ); ?></label>
+                                <input type="url" id="ssm-social-link">
+                                <input type="checkbox" id="ssm-social-toggle" class="ssm-checkbox">
+                            </div>
+                        </div>
+                    </section>
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Data & Privacy', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-grid ssm-grid-cols-2">
+                            <div class="ssm-form-field">
+                                <label><?php _e( 'System IDS & API', 'ssm-inventory' ); ?></label>
+                                <div class="ssm-input-with-button">
+                                    <input type="text" value="Slug: ssm-settings" readonly>
+                                </div>
+                                <div class="ssm-input-with-button">
+                                    <input type="text" value="Ruxs 2.0-ce100ED" readonly>
+                                    <button class="ssm-button-tertiary"><?php _e( 'Copy', 'ssm-inventory' ); ?></button>
+                                </div>
+                            </div>
+                            <div class="ssm-form-field">
+                                </div>
+                             <div class="ssm-form-field">
+                                <label><?php _e( 'Plug: ssm-settings-root', 'ssm-inventory' ); ?></label>
+                                <div class="ssm-input-with-button">
+                                    <input type="text" value="Roost Token" readonly>
+                                    <button class="ssm-button-tertiary"><?php _e( 'Generate', 'ssm-inventory' ); ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    </div> <div class="ssm-grid-sidebar">
+
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Business Profile', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-field">
+                            <label for="ssm-biz-name"><?php _e( 'Business Name (English)*', 'ssm-inventory' ); ?></label>
+                            <input type="text" id="ssm-biz-name">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label for="ssm-legal-name"><?php _e( 'Legal/Registered Name', 'ssm-inventory' ); ?></label>
+                            <input type="text" id="ssm-legal-name">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label for="ssm-reg-no"><?php _e( 'Registration No.', 'ssm-inventory' ); ?></label>
+                            <input type="text" id="ssm-reg-no">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label for="ssm-ntn-tax"><?php _e( 'NTN/Tax ID', 'ssm-inventory' ); ?></label>
+                            <input type="text" id="ssm-ntn-tax">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label for="ssm-owner-contact"><?php _e( 'Owner/Contact Person', 'ssm-inventory' ); ?></label>
+                            <input type="text" id="ssm-owner-contact">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label for="ssm-number-locations"><?php _e( 'Number Locations', 'ssm-inventory' ); ?></label>
+                            <input type="number" id="ssm-number-locations" class="ssm-input-small">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label for="ssm-number-faxticons"><?php _e( 'Number Faxticons', 'ssm-inventory' ); ?></label>
+                            <input type="number" id="ssm-number-faxticons" class="ssm-input-small">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label for="ssm-mixed-use"><?php _e( 'Mixed-Use', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-mixed-use" class="ssm-checkbox">
+                        </div>
+                    </section>
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Locations & Address', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-field">
+                            <label for="ssm-map-link"><?php _e( '+92 (International format)', 'ssm-inventory' ); ?></label>
+                            <input type="text" id="ssm-map-link">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Repeats for all (un-translated /additional) overrides', 'ssm-inventory' ); ?></label>
+                            <div class="ssm-input-with-button">
+                                <input type="text" value="Caretation grosse me..." readonly>
+                                <button class="ssm-button-tertiary"><?php _e( 'Copy', 'ssm-inventory' ); ?></button>
+                            </div>
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Rounding Pule', 'ssm-inventory' ); ?></label>
+                            <div class="ssm-map-placeholder">
+                                </div>
+                        </div>
+                    </section>
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Cofault & Support', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Priculity', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-priculity-toggle" class="ssm-checkbox-toggle">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Default Tax (SAVE)', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-default-tax-toggle" class="ssm-checkbox-toggle">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Service Charge %', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-service-charge-toggle" class="ssm-checkbox-toggle">
+                        </div>
+                        <p class="ssm-field-description"><?php _e( 'Show address pulicity by(int can Rlsose)', 'ssm-inventory' ); ?></p>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Usage Preview', 'ssm-inventory' ); ?></label>
+                            <pre class="ssm-code-preview">[BUILDING-FLOORROOM]</pre>
+                        </div>
+                         <div class="ssm-form-field">
+                            <label><?php _e( 'Tags power translate', 'ssm-inventory' ); ?></label>
+                            <pre class="ssm-code-preview">I run cume caenp...</pre>
+                        </div>
+                    </section>
+                    <section class="ssm-card">
+                        <h2><?php _e( 'Notifications', 'ssm-inventory' ); ?></h2>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Dash Addon', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-dash-addon-toggle" class="ssm-checkbox-toggle">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Post (wwws)', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-post-toggle" class="ssm-checkbox-toggle">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Cemesto', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-cemesto-toggle" class="ssm-checkbox-toggle">
+                        </div>
+                        <div class="ssm-form-field">
+                            <label><?php _e( 'Email mishm a guest details after retention period', 'ssm-inventory' ); ?></label>
+                            <input type="checkbox" id="ssm-email-mishm-toggle" class="ssm-checkbox-toggle">
+                        </div>
+                        <div class="ssm-form-field ssm-plugin-token-field">
+                            <input type="checkbox" id="ssm-plugin-token-toggle" class="ssm-checkbox">
+                            <label for="ssm-plugin-token-toggle"><?php _e( 'This plugin subfix tokens...', 'ssm-inventory' ); ?></label>
+                            <span class="ssm-badge-represent"><?php _e( 'Represente', 'ssm-inventory' ); ?></span>
+                        </div>
+                    </section>
+                    </div> </div> <footer class="ssm-page-footer">
+                <span><?php _e( 'Last modified 2 mins ago', 'ssm-inventory' ); ?></span>
+                <div class="ssm-footer-actions">
+                    <button class="ssm-button ssm-button-primary"><?php _e( 'Save All Changes', 'ssm-inventory' ); ?></button>
+                    <button class="ssm-button ssm-button-tertiary"><?php _e( 'Discard', 'ssm-inventory' ); ?></button>
+                    <button class="ssm-button ssm-button-link"><?php _e( 'Reset to Defaults', 'ssm-inventory' ); ?></button>
+                </div>
+            </footer>
+            </div> <?php
         echo '</template>';
     }
 
