@@ -437,7 +437,7 @@ final class SSM_Inventory_Plugin {
         echo '</template>';
     }
 
-  /**
+    /**
      * Renders the Unit Types page.
      * (Rule 6: Must have root div and template)
      */
@@ -620,7 +620,9 @@ final class SSM_Inventory_Plugin {
             </footer>
             </div> <?php
         echo '</template>';
- /**
+    }
+
+    /**
      * Renders the Units page.
      * (Rule 6: Must have root div and template)
      */
@@ -662,8 +664,8 @@ final class SSM_Inventory_Plugin {
                         <span class="ssm-stat-card-value">41 <small><?php _e( 'Active', 'ssm-inventory' ); ?></small></span>
                     </div>
                 </div>
-                <div class="ssm-stat-card">
-                    <div classs="ssm-stat-card-icon" style="--icon-bg: #dcfce7;">
+                <div classs="ssm-stat-card">
+                    <div class="ssm-stat-card-icon" style="--icon-bg: #dcfce7;">
                         </div>
                     <div class="ssm-stat-card-info">
                         <span class="ssm-stat-card-title"><?php _e( 'Unit Type', 'ssm-inventory' ); ?></span>
