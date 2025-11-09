@@ -1,1 +1,248 @@
+/**
+ * BSSMS Parent 'Fee Payments' Styles
+ * Layout Image: IMG_2957.jpeg
+ */
 
+/* 🟢 یہاں سے [Parent Fee Payments CSS] شروع ہو رہا ہے */
+
+/* --- Page Structure --- */
+.bssms-parent-fees {
+    padding: 20px;
+    background-color: var(--bssms-color-bg-light);
+    font-family: 'Nunito', sans-serif;
+}
+
+/* --- Stats Grid --- */
+.bssms-stats-grid-fees {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.bssms-stats-grid-fees .bssms-stat-card {
+    background: var(--bssms-color-card-bg);
+    border-radius: var(--bssms-border-radius);
+    padding: 15px;
+    box-shadow: var(--bssms-shadow-light);
+    border-left: 5px solid #ccc;
+}
+
+.bssms-stats-grid-fees .bssms-stat-card:nth-child(1) { border-color: var(--bssms-color-danger); } /* Due */
+.bssms-stats-grid-fees .bssms-stat-card:nth-child(2) { border-color: var(--bssms-color-secondary); } /* Due this month */
+.bssms-stats-grid-fees .bssms-stat-card:nth-child(3),
+.bssms-stats-grid-fees .bssms-stat-card:nth-child(4) { border-color: var(--bssms-color-success); } /* Paid */
+
+.bssms-stats-grid-fees .card-label {
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+.bssms-stats-grid-fees .card-value {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--bssms-color-text);
+}
+.bssms-stats-grid-fees .card-sublabel-due {
+    color: var(--bssms-color-danger);
+    font-size: 0.8rem;
+}
+.bssms-stats-grid-fees .card-sublabel-increase {
+    color: var(--bssms-color-success);
+    font-size: 0.8rem;
+}
+
+.bssms-stats-grid-fees .bssms-stat-card-highlight {
+    background-color: var(--bssms-color-primary);
+    color: white;
+    padding: 15px;
+    border-radius: var(--bssms-border-radius);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: var(--bssms-shadow-light);
+}
+.bssms-stats-grid-fees .bssms-stat-card-highlight .card-label {
+    color: #fff;
+}
+.bssms-stats-grid-fees .bssms-stat-card-highlight .card-value-date {
+    font-size: 1.6rem;
+    font-weight: 700;
+}
+
+/* --- Toolbar --- */
+.bssms-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: var(--bssms-color-card-bg);
+    border-radius: var(--bssms-border-radius);
+    margin-bottom: 20px;
+    box-shadow: var(--bssms-shadow-light);
+}
+
+.bssms-toolbar .search-box {
+    position: relative;
+    flex-grow: 1;
+    max-width: 300px;
+}
+.bssms-toolbar .bssms-actions-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.bssms-toolbar .bssms-btn {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+}
+
+/* --- Main Grid --- */
+.bssms-layout-grid-2col {
+    display: grid;
+    grid-template-columns: 3fr 1.5fr; /* Left (Wide Tables) | Right (Sidebar) */
+    gap: 20px;
+}
+
+/* --- Tables (Left Column) --- */
+#widget-outstanding-invoices, #widget-receipts-history-bottom {
+    margin-bottom: 20px;
+}
+.bssms-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    margin-top: 10px;
+}
+.bssms-data-table th, .bssms-data-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+.bssms-data-table th {
+    background-color: #f4f6f9;
+    font-weight: 600;
+}
+.status-tag.status-overdue {
+    background-color: var(--bssms-color-danger);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+.status-tag.status-succeeded {
+    background-color: var(--bssms-color-success);
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+.status-tag.status-jazzcash {
+    background-color: #ff9900; /* JazzCash Color */
+    color: white;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* --- Sidebar (Right Column) --- */
+/* Invoice Breakdown */
+#widget-invoice-breakdown .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+#widget-invoice-breakdown .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+#widget-invoice-breakdown .fee-details p {
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+#widget-invoice-breakdown .payment-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+#widget-invoice-breakdown .discount-code {
+    margin-top: 15px;
+}
+#widget-invoice-breakdown input[type="text"],
+#widget-invoice-breakdown textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+/* Secure Payment */
+#widget-secure-payment .bssms-btn-full-width {
+    width: 100%;
+    margin-top: 15px;
+}
+#widget-secure-payment form label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+#widget-secure-payment form p {
+    margin: 5px 0 10px 0;
+    font-size: 1rem;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .bssms-stats-grid-fees {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .bssms-stats-grid-fees .bssms-stat-card-highlight {
+        grid-column: span 3;
+    }
+}
+
+@media (max-width: 992px) {
+    .bssms-layout-grid-2col {
+        grid-template-columns: 1fr; /* Single column */
+    }
+    .bssms-stats-grid-fees {
+        grid-template-columns: 1fr 1fr;
+    }
+    .bssms-stats-grid-fees .bssms-stat-card-highlight {
+        grid-column: span 2;
+    }
+}
+@media (max-width: 576px) {
+    .bssms-stats-grid-fees {
+        grid-template-columns: 1fr;
+    }
+    .bssms-stats-grid-fees .bssms-stat-card-highlight {
+        grid-column: span 1;
+    }
+    .bssms-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .bssms-toolbar .search-box {
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .bssms-toolbar .bssms-actions-right {
+        flex-direction: column;
+        gap: 5px;
+    }
+    .bssms-toolbar .bssms-actions-right .bssms-btn {
+        width: 100%;
+    }
+}
+
+/* 🔴 یہاں پر [Parent Fee Payments CSS] ختم ہو رہا ہے */
+
+/* ✅ Syntax verified block end. */
