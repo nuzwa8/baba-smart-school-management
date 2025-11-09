@@ -1,1 +1,247 @@
+/**
+ * BSSMS Parent 'Messages & Announcements' Styles
+ * Layout Image: IMG_2960.jpeg
+ */
 
+/* 🟢 یہاں سے [Parent Messages CSS] شروع ہو رہا ہے */
+
+/* --- Page Structure --- */
+.bssms-parent-messages {
+    padding: 20px;
+    background-color: var(--bssms-color-bg-light);
+    font-family: 'Nunito', sans-serif;
+}
+
+/* --- Tabs Toolbar (Top) --- */
+.bssms-tabs-toolbar {
+    background-color: var(--bssms-color-card-bg);
+    border-radius: var(--bssms-border-radius);
+    box-shadow: var(--bssms-shadow-light);
+    margin-bottom: 20px;
+}
+.bssms-tabs {
+    list-style: none;
+    padding: 0 15px;
+    margin: 0;
+    display: flex;
+    border-bottom: 1px solid #eee;
+}
+.bssms-tabs .tab-item {
+    margin-right: 20px;
+}
+.bssms-tabs .tab-item a {
+    display: block;
+    padding: 10px 0;
+    text-decoration: none;
+    color: #6c757d;
+    font-weight: 500;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s;
+}
+.bssms-tabs .tab-item.active a {
+    color: var(--bssms-color-primary);
+    border-bottom-color: var(--bssms-color-primary);
+}
+
+/* --- Main Messages Layout (3 Columns) --- */
+.bssms-messages-layout {
+    display: grid;
+    grid-template-columns: 1.5fr 3fr 1fr; /* List | Chat | Settings */
+    gap: 20px;
+}
+
+/* --- Left Column: Message List --- */
+.bssms-messages-list-col {
+    background-color: var(--bssms-color-card-bg);
+    border-radius: var(--bssms-border-radius);
+    box-shadow: var(--bssms-shadow-light);
+    padding: 15px;
+}
+.bssms-messages-list-col .search-box input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+.bssms-tabs-toolbar-inner {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+.bssms-tabs-inner {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    font-size: 0.9rem;
+}
+.bssms-tabs-inner .tab-item {
+    margin-right: 15px;
+}
+
+.message-list-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.message-list-items .message-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto; /* Avatar | Content | Meta */
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+.message-list-items .message-item.active {
+    background-color: #f0f8ff; /* Light highlight for active thread */
+    border-left: 3px solid var(--bssms-color-primary);
+    padding-left: 12px;
+}
+.message-list-items .avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+.message-list-items .message-sender .sender-name {
+    font-weight: 600;
+    display: block;
+}
+.message-list-items .message-snippet p {
+    margin: 0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Middle Column: Chat View --- */
+.bssms-messages-chat-col {
+    background-color: var(--bssms-color-card-bg);
+    border-radius: var(--bssms-border-radius);
+    box-shadow: var(--bssms-shadow-light);
+    display: flex;
+    flex-direction: column;
+}
+.chat-header {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+}
+.chat-user-info {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+.chat-actions button {
+    margin-left: 10px;
+}
+
+.chat-body {
+    flex-grow: 1;
+    padding: 15px;
+    overflow-y: auto;
+}
+.message-bubble {
+    max-width: 70%;
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+.message-bubble.sender {
+    background-color: var(--bssms-color-primary);
+    color: white;
+    margin-left: auto;
+    border-bottom-right-radius: 2px;
+}
+.message-bubble.receiver {
+    background-color: #f0f0f0;
+    color: var(--bssms-color-text);
+    margin-right: auto;
+    border-bottom-left-radius: 2px;
+}
+
+.chat-reply-box {
+    padding: 15px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.chat-reply-box input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+}
+
+/* --- Right Column: Settings --- */
+.bssms-messages-settings-col {
+    /* Padding is inside the card */
+}
+#widget-notification-settings form label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+#widget-notification-settings form input[type="text"] {
+    width: 100%;
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+/* --- RTL Adjustments --- */
+[dir="rtl"] .bssms-tabs .tab-item {
+    margin-right: 0;
+    margin-left: 20px;
+}
+[dir="rtl"] .bssms-messages-layout {
+    direction: rtl;
+}
+[dir="rtl"] .message-list-items .message-item.active {
+    border-left: none;
+    border-right: 3px solid var(--bssms-color-primary);
+    padding-left: 0;
+    padding-right: 12px;
+}
+[dir="rtl"] .chat-user-info {
+    margin-left: 0;
+    margin-right: 10px;
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .bssms-messages-layout {
+        grid-template-columns: 2fr 3fr; /* Hide settings sidebar */
+    }
+    .bssms-messages-settings-col {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .bssms-messages-layout {
+        grid-template-columns: 1fr; /* Stack columns */
+    }
+    .bssms-messages-list-col {
+        height: 300px; /* Fixed height for message list on mobile */
+        overflow-y: scroll;
+    }
+    .chat-body {
+        min-height: 400px;
+    }
+    .bssms-messages-settings-col {
+        display: block; /* Show settings at the bottom */
+    }
+}
+@media (max-width: 576px) {
+    .bssms-tabs {
+        flex-wrap: wrap;
+    }
+}
+
+/* 🔴 یہاں پر [Parent Messages CSS] ختم ہو رہا ہے */
+
+/* ✅ Syntax verified block end. */
