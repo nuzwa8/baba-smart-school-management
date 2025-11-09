@@ -1,1 +1,223 @@
+/**
+ * BSSMS Parent 'Attendance Tracker' Styles
+ * Layout Image: IMG_2958.jpeg
+ */
 
+/* 🟢 یہاں سے [Parent Attendance Tracker CSS] شروع ہو رہا ہے */
+
+/* --- Page Structure --- */
+.bssms-parent-attendance {
+    padding: 20px;
+    background-color: var(--bssms-color-bg-light);
+    font-family: 'Nunito', sans-serif;
+}
+
+/* --- Stats Grid (Attendance) --- */
+.bssms-stats-grid-attendance {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.bssms-stats-grid-attendance .bssms-stat-card {
+    background: var(--bssms-color-card-bg);
+    border-radius: var(--bssms-border-radius);
+    padding: 20px;
+    box-shadow: var(--bssms-shadow-light);
+    text-align: center;
+    border-bottom: 5px solid #ccc;
+}
+
+.bssms-stats-grid-attendance .bssms-stat-card:nth-child(1) { border-color: var(--bssms-color-success); } /* Overall */
+.bssms-stats-grid-attendance .bssms-stat-card:nth-child(2) { border-color: var(--bssms-color-primary); } /* Present */
+.bssms-stats-grid-attendance .bssms-stat-card:nth-child(3) { border-color: var(--bssms-color-danger); } /* Absent */
+.bssms-stats-grid-attendance .bssms-stat-card:nth-child(4) { border-color: var(--bssms-color-secondary); } /* Late */
+
+.bssms-stats-grid-attendance .card-label {
+    font-size: 0.9rem;
+    color: #6c757d;
+    display: block;
+}
+.bssms-stats-grid-attendance .card-value {
+    font-size: 2.0rem;
+    font-weight: 700;
+    margin: 5px 0;
+    color: var(--bssms-color-text);
+}
+
+/* --- Main Grid --- */
+.bssms-layout-grid-2col-attendance {
+    display: grid;
+    grid-template-columns: 3fr 1.2fr; /* Left (Calendar/Charts) | Right (Sidebar) */
+    gap: 20px;
+}
+.bssms-grid-col-left {
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- Calendar Widget --- */
+#widget-attendance-calendar {
+    margin-bottom: 20px;
+}
+#widget-attendance-calendar .widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#widget-attendance-calendar .widget-filters {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+#widget-attendance-calendar .widget-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+#widget-attendance-calendar input, #widget-attendance-calendar select {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+#widget-attendance-calendar .calendar-placeholder {
+    min-height: 250px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-legend {
+    display: flex;
+    gap: 20px;
+    padding-top: 15px;
+    font-size: 0.85rem;
+}
+.calendar-legend .legend-item {
+    display: flex;
+    align-items: center;
+}
+.calendar-legend .legend-item::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+.legend-item.present::before { background-color: var(--bssms-color-primary); }
+.legend-item.absent::before { background-color: var(--bssms-color-danger); }
+.legend-item.late::before { background-color: var(--bssms-color-secondary); }
+.legend-item.holiday::before { background-color: #999; }
+
+
+/* --- Chart Widgets (Bottom Left) --- */
+#widget-attendance-trend, #widget-absence-breakdown {
+    flex: 1;
+    margin-bottom: 20px; /* To separate from the next section if needed, but flex handles spacing */
+}
+.chart-placeholder-line, .chart-placeholder-pie {
+    min-height: 180px;
+    background-color: #f8f8f8;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* --- Sidebar Widgets (Right Column) --- */
+.bssms-grid-col-right .bssms-widget-card {
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+/* Child Info Widget */
+#widget-child-info .user-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+#widget-child-info .avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+#widget-child-info .info-text h4 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+#widget-child-info .info-text span {
+    display: block;
+    font-size: 0.85rem;
+    color: #6c757d;
+}
+
+/* Absence Alerts */
+#widget-absence-alerts .alert-list {
+    list-style: none;
+    padding: 0;
+}
+#widget-absence-alerts .alert-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    padding: 5px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+/* AI Predictor */
+#widget-ai-predictor {
+    border-left: 5px solid var(--bssms-color-primary); /* Highlight for AI feature */
+}
+#widget-ai-predictor p {
+    font-size: 0.9rem;
+    color: var(--bssms-color-text);
+}
+.chart-placeholder-line-small {
+    min-height: 80px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 1200px) {
+    .bssms-stats-grid-attendance {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 992px) {
+    .bssms-layout-grid-2col-attendance {
+        grid-template-columns: 1fr; /* Single column */
+    }
+}
+@media (max-width: 576px) {
+    .bssms-stats-grid-attendance {
+        grid-template-columns: 1fr;
+    }
+    #widget-attendance-calendar .widget-toolbar {
+        flex-wrap: wrap;
+    }
+    #widget-attendance-calendar .widget-toolbar input,
+    #widget-attendance-calendar .widget-toolbar select,
+    #widget-attendance-calendar .widget-toolbar button {
+        width: 100%;
+    }
+}
+
+/* 🔴 یہاں پر [Parent Attendance Tracker CSS] ختم ہو رہا ہے */
+
+/* ✅ Syntax verified block end. */
