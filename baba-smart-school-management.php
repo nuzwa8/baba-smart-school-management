@@ -46,6 +46,7 @@ spl_autoload_register( 'bssms_autoload_classes' );
  * @uses BSSMS_Activator
  */
 function bssms_activate_plugin() {
+	// BSSMS_Activator کلاس Autoload کے ذریعے خود ہی شامل ہو جائے گی
 	BSSMS_Activator::activate();
 }
 register_activation_hook( __FILE__, 'bssms_activate_plugin' );
@@ -93,19 +94,20 @@ class BSSMS_Core {
 	}
 
 	/**
-	 * ضروری کلاس فائلیں شامل کریں۔ (Part 18 - Final)
+	 * ضروری کلاس فائلیں شامل کریں۔ (صرف پیج لاجک فائلیں شامل ہوں گی)
 	 */
 	private function includes() {
 		// پیج لاجک فائلیں شامل کریں (قاعدہ 30 کے مطابق)
+		// Autoload فنکشن باقی تمام کلاسز (Activator, DB, Assets, Ajax) کو خود ہی شامل کرے گا
 		require_once BSSMS_PATH . 'pages/bssms-admission-page.php';
 		require_once BSSMS_PATH . 'pages/bssms-students-list-page.php';
 		require_once BSSMS_PATH . 'pages/bssms-courses-setup-page.php';
 		require_once BSSMS_PATH . 'pages/bssms-settings-page.php';
-		require_once BSSMS_PATH . 'pages/bssms-dashboard-page.php'; // ڈیش بورڈ پیج
+		require_once BSSMS_PATH . 'pages/bssms-dashboard-page.php';
 	}
 
 	/**
-	 * تمام ہکس (Hooks) کو سیٹ اپ کریں۔ (Part 18 - Final)
+	 * تمام ہکس (Hooks) کو سیٹ اپ کریں۔
 	 */
 	private function hooks() {
 		// (PHP) ایڈمن مینو اور اثاثے لوڈ کریں۔
@@ -131,20 +133,18 @@ class BSSMS_Core {
 
 	/**
 	 * ایڈمن مینو شامل کریں۔
-	 *
-	 * قاعدہ 12 اور 15: Slugs ہمیشہ مطابقت رکھیں۔
 	 */
 	public function add_plugin_menu() {
         $pages = $this->pages;
         
 		add_menu_page(
-			esc_html__( 'بابا اکیڈمی ڈیش بورڈ', 'bssms' ), // Page Title
-			esc_html__( 'بابا اکیڈمی', 'bssms' ), // Menu Title
-			'bssms_manage_admissions', // Capability: نیا رول
-			$pages['dashboard'], // Menu Slug
-			array( $this, 'render_dashboard_page' ), // Callback
-			'dashicons-welcome-learn-more', // Icon
-			6 // Position
+			esc_html__( 'بابا اکیڈمی ڈیش بورڈ', 'bssms' ),
+			esc_html__( 'بابا اکیڈمی', 'bssms' ),
+			'bssms_manage_admissions',
+			$pages['dashboard'],
+			array( $this, 'render_dashboard_page' ),
+			'dashicons-welcome-learn-more',
+			6
 		);
 
 		// 1. داخلہ فارم
@@ -152,8 +152,8 @@ class BSSMS_Core {
 			$pages['dashboard'],
 			esc_html__( 'داخلہ فارم', 'bssms' ),
 			esc_html__( 'داخلہ فارم', 'bssms' ),
-			'bssms_create_admission', // Capability
-			$pages['admission'], // Slug
+			'bssms_create_admission',
+			$pages['admission'],
 			array( $this, 'render_admission_page' )
 		);
 
@@ -162,8 +162,8 @@ class BSSMS_Core {
 			$pages['dashboard'],
 			esc_html__( 'طالب علم کی فہرست', 'bssms' ),
 			esc_html__( 'طالب علم کی فہرست', 'bssms' ),
-			'bssms_manage_admissions', // Capability
-			$pages['students-list'], // Slug
+			'bssms_manage_admissions',
+			$pages['students-list'],
 			array( $this, 'render_students_list_page' )
 		);
 
@@ -172,8 +172,8 @@ class BSSMS_Core {
 			$pages['dashboard'],
 			esc_html__( 'کورسز سیٹ اپ', 'bssms' ),
 			esc_html__( 'کورسز سیٹ اپ', 'bssms' ),
-			'manage_options', // Admin Capability
-			$pages['courses-setup'], // Slug
+			'manage_options',
+			$pages['courses-setup'],
 			array( $this, 'render_courses_setup_page' )
 		);
 
@@ -183,14 +183,13 @@ class BSSMS_Core {
 			esc_html__( 'سسٹم ترتیبات', 'bssms' ),
 			esc_html__( 'سسٹم ترتیبات', 'bssms' ),
 			'manage_options',
-			$pages['settings'], // Slug
+			$pages['settings'],
 			array( $this, 'render_settings_page' )
 		);
 	}
 
 	/**
-	 * ہر صفحے کے لیے Placeholder رینڈر فنکشنز۔
-	 * یہ فنکشنز سرشار کلاس کو کال کرتے ہیں۔ (Part 18 - Final)
+	 * ہر صفحے کے لیے رینڈر فنکشنز۔
 	 */
 	public function render_dashboard_page() {
 		BSSMS_Dashboard_Page::render_page();
