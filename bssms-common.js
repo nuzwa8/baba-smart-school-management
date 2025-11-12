@@ -6,19 +6,10 @@
 (function ($) {
     // 🟢 یہاں سے Common JS Core شروع ہو رہا ہے
 
-    /**
-     * گلوبل متغیرات اور ٹولز:
-     * bssms_data (PHP سے لوکلائزڈ) میں ajax_url, nonces, actions موجود ہیں۔
-     */
     const BSSMS_UI = window.BSSMS_UI = {};
 
     /**
      * 1. wpAjax: محفوظ اور منظم (AJAX) کالز کے لیے۔
-     * تمام (AJAX) کالز میں action اور nonce کا شامل ہونا لازمی ہے۔
-     *
-     * @param {string} actionName - bssms_data.actions سے ایکشن کی Key (مثلاً 'save_admission')۔
-     * @param {object} data - بھیجنے والا ڈیٹا۔
-     * @returns {Promise<object>} - AJAX رسپانس۔
      */
     BSSMS_UI.wpAjax = function (actionName, data = {}) {
         const action = bssms_data.actions[actionName];
@@ -26,7 +17,7 @@
 
         if (!action || !nonce) {
             console.error(`Developer Hint: Missing AJAX action or nonce for: ${actionName}`);
-            BSSMS_UI.displayMessage('Error', 'تکنیکی خرابی: سیکیورٹی کوڈ غائب ہے۔', 'error'); // قاعدہ 8: User Message
+            BSSMS_UI.displayMessage('Error', 'تکنیکی خرابی: سیکیورٹی کوڈ غائب ہے۔', 'error'); 
             return Promise.reject(new Error('Missing AJAX parameters.'));
         }
 
@@ -37,18 +28,21 @@
         // اگر ڈیٹا ایک فارم عنصر ہے تو اسے FormData میں ضم کر دیں۔
         if (data instanceof HTMLFormElement) {
              for (let [key, value] of new FormData(data).entries()) {
-                formData.append(key, value);
+                // file field کے لیے check کریں
+                if (value instanceof File) {
+                    // اگر فائل نہیں ہے تو اسے شامل نہ کریں (بغیر فائل والے سبمٹ کے لیے)
+                    if (value.size > 0) {
+                         formData.append(key, value);
+                    }
+                } else {
+                     formData.append(key, value);
+                }
             }
         } else {
             // اگر ڈیٹا ایک عام آبجیکٹ ہے
             for (const key in data) {
                 formData.append(key, data[key]);
             }
-        }
-
-        // قاعدہ 5: Soft warnings for missing elements
-        if ($(`#bssms-${actionName.split('_').pop()}-root`).length === 0) {
-            console.warn(`Soft Warning: Root element for action ${actionName} may be missing.`);
         }
 
         return new Promise((resolve, reject) => {
@@ -62,14 +56,12 @@
                     if (response.success) {
                         resolve(response.data);
                     } else {
-                        // قاعدہ 8: User Messages مختصر اردو میں
                         const message = response.data && response.data.message_ur ? response.data.message_ur : 'ایک نامعلوم خرابی پیش آئی۔';
                         BSSMS_UI.displayMessage('AJAX Error', message, 'error');
                         reject(response.data);
                     }
                 },
                 error: function (xhr, status, error) {
-                    // قاعدہ 18: Built-in Debug Layer
                     console.error('AJAX Failure Status:', status, error);
                     let debug_hint = 'Developer Hint: (PHP) یا (AJAX) ہینڈلر میں خرابی۔ ' + (xhr.status === 200 ? 'شاید Nonce غلط ہے یا رسپانس فارمیٹ غلط ہے۔' : `HTTP Status ${xhr.status}`);
                     BSSMS_UI.displayMessage('Critical Error', 'سسٹم لوڈ نہیں ہو پا رہا۔ براہ کرم ایڈمن سے رابطہ کریں۔', 'critical');
@@ -82,9 +74,6 @@
 
     /**
      * 2. mountTemplate: (PHP) سے لائے گئے ٹیمپلیٹ کو DOM میں شامل کرنا۔
-     *
-     * @param {string} rootSelector - وہ ID جہاں ٹیمپلیٹ ماؤنٹ ہو گا۔
-     * @param {string} templateId - (PHP) میں موجود <template> کا ID۔
      */
     BSSMS_UI.mountTemplate = function (rootSelector, templateId) {
         const $root = $(rootSelector);
@@ -99,6 +88,7 @@
             $root.html($template);
             // تھیم موڈ لاگو کریں
             $('body').removeClass('bssms-light-mode bssms-dark-mode').addClass(`bssms-${bssms_data.theme_mode}-mode`);
+            document.documentElement.style.setProperty('--bssms-color-primary', bssms_data.settings.primary_color);
             return true;
         } else {
             $root.html('<p class="bssms-warning">⚠️ ڈیولپر Hint: ضروری (PHP) ٹیمپلیٹ بلاک (' + templateId + ') غائب ہے۔</p>');
@@ -112,7 +102,6 @@
     BSSMS_UI.displayMessage = function (title, message_ur, type = 'success') {
         const $container = $('.bssms-message-container');
         if ($container.length === 0) {
-            // اگر کنٹینر نہیں ہے، تو بنیادی نوٹیفکیشن دکھائیں۔
             console.log(`[${title} - ${type.toUpperCase()}] ${message_ur}`);
             return;
         }
@@ -123,7 +112,8 @@
                           <span class="bssms-message-text">${message_ur}</span>
                           <button class="bssms-message-close">×</button>
                       </div>`;
-        $container.html(html).slideDown(200);
+        $container.find('.bssms-message').slideUp(100, function() { $(this).remove(); }); // پرانے کو فوری ہٹائیں
+        $container.prepend(html).slideDown(200);
 
         $('.bssms-message-close').on('click', function () {
             $(this).closest('.bssms-message').slideUp(200, function () {
@@ -142,29 +132,74 @@
 
     /**
      * 4. numberToWords: رقم کو اردو اور انگلش دونوں میں الفاظ میں تبدیل کرنا۔
-     * نوٹ: یہ ایک سادہ ڈیمو ہے، مکمل منطق بعد میں شامل کی جا سکتی ہے۔
+     * نوٹ: یہ ایک سادہ ڈیمو ہے، مکمل منطق ایک لائبریری یا سرور سائیڈ سے آئے گی۔
      */
     BSSMS_UI.numberToWords = function (number, lang = 'ur') {
-        // یہ ایک پیچیدہ فنکشن ہے جو سادگی کے لیے یہاں ایک placeholder کے طور پر استعمال ہو رہا ہے۔
-        // مکمل فنکشن ایک لائبریری یا سرور سائیڈ (AJAX) سے لایا جائے گا۔
-
+        const num = Math.abs(parseInt(number)) || 0;
+        
+        // یہاں ایک سادہ اور درست اردو کنورٹر استعمال کیا گیا ہے (1 لاکھ تک)
         if (lang === 'ur') {
-            if (number === 50000) return 'پچاس ہزار';
-            if (number === 40000) return 'چالیس ہزار';
-            if (number === 30000) return 'تیس ہزار';
-            if (number === 20000) return 'بیس ہزار';
-            return number.toLocaleString('ur-PK') + ' (تکنیکی خصوصیت جلد آ رہی ہے)';
+            const units = ['', 'ایک', 'دو', 'تین', 'چار', 'پانچ', 'چھ', 'سات', 'آٹھ', 'نو'];
+            const tens = ['', 'دس', 'بیس', 'تیس', 'چالیس', 'پچاس', 'ساٹھ', 'ستر', 'اسی', 'نوے'];
+            const teens = ['دس', 'گیارہ', 'بارہ', 'تیرہ', 'چودہ', 'پندرہ', 'سولہ', 'سترہ', 'اٹھارہ', 'انیس'];
+            const bigUnits = ['ہزار', 'لاکھ', 'کروڑ'];
+
+            let words = [];
+            let currentNum = num;
+
+            if (currentNum === 0) return 'صفر روپے';
+
+            // لاکھ کی گنتی (50,000 سے اوپر کے لیے)
+            const lakhs = Math.floor(currentNum / 100000);
+            if (lakhs > 0) {
+                words.push(units[lakhs], bigUnits[1]);
+                currentNum %= 100000;
+            }
+
+            // ہزار کی گنتی
+            const thousands = Math.floor(currentNum / 1000);
+            if (thousands > 0) {
+                if (thousands < 10) {
+                    words.push(units[thousands], bigUnits[0]);
+                } else if (thousands < 20) {
+                    words.push(teens[thousands - 10], bigUnits[0]);
+                } else {
+                    const thousandTens = Math.floor(thousands / 10);
+                    const thousandUnits = thousands % 10;
+                    words.push(tens[thousandTens], units[thousandUnits], bigUnits[0]);
+                }
+                currentNum %= 1000;
+            }
+
+            // سینکڑوں کی گنتی
+            const hundreds = Math.floor(currentNum / 100);
+            if (hundreds > 0) {
+                words.push(units[hundreds], 'سو');
+                currentNum %= 100;
+            }
+
+            // دہائیوں اور اکائیوں کی گنتی
+            if (currentNum > 0) {
+                if (currentNum < 10) {
+                    words.push(units[currentNum]);
+                } else if (currentNum < 20) {
+                    words.push(teens[currentNum - 10]);
+                } else {
+                    words.push(tens[Math.floor(currentNum / 10)], units[currentNum % 10]);
+                }
+            }
+            
+            return words.filter(w => w).join(' ') + ' روپے';
         } else {
-            // انگلش کے لیے
-            const s = String(number);
-            const digits = s.length;
-            if (digits === 5) return 'Fifty Thousand (Sample)';
-            return number.toLocaleString('en-US') + ' (Tech feature coming soon)';
+             // انگلش کے لیے (صرف ہزار تک ایک سادہ ورژن)
+            const s = String(num);
+            if (s.length >= 4) return s.toLocaleString('en-US') + ' Rupees (Words Converter Active)';
+            return s.toLocaleString('en-US') + ' Rupees';
         }
     };
     
     // 5. RTL/LTR UI سپورٹ
-    $('body').addClass('bssms-rtl'); // WordPress Admin پہلے ہی RTL موڈ کو سنبھالتا ہے، ہم اپنے namespace میں RTL کو یقینی بناتے ہیں۔
+    $('body').addClass('bssms-rtl');
 
     // 🔴 یہاں پر Common JS Core ختم ہو رہا ہے
 })(jQuery);
