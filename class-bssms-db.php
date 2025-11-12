@@ -225,3 +225,108 @@ public static function delete_admission( $id ) {
 }
 
 // ✅ Syntax verified block end
+/** Part 8 — Courses Setup: DB CRUD Logic */
+
+// BSSMS_DB کلاس کے اندر، نئے فنکشنز شامل کریں۔
+
+/**
+ * کورسز کی فہرست تلاش اور فلٹرز کے ساتھ حاصل کریں۔
+ *
+ * @param string $search تلاش کی سٹرنگ۔
+ * @param string $status فعال یا غیر فعال حیثیت۔
+ * @return array
+ */
+public static function get_all_courses_with_filters( $search = '', $status = '' ) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'bssms_courses';
+    
+    $where = 'WHERE 1=1';
+    $params = array();
+
+    // سرچ فلٹر
+    if ( ! empty( $search ) ) {
+        $search = '%' . $wpdb->esc_like( $search ) . '%';
+        $where .= ' AND (course_name_en LIKE %s OR course_name_ur LIKE %s)';
+        $params[] = $search;
+        $params[] = $search;
+    }
+
+    // حیثیت فلٹر
+    if ( $status === 'active' ) {
+        $where .= ' AND is_active = %d';
+        $params[] = 1;
+    } elseif ( $status === 'inactive' ) {
+        $where .= ' AND is_active = %d';
+        $params[] = 0;
+    }
+
+    // قاعدہ 4: $wpdb->prepare() queries
+    $sql = "SELECT * FROM $table $where ORDER BY id DESC";
+    
+    $results = $wpdb->get_results( $wpdb->prepare( $sql, $params ), ARRAY_A );
+
+    return $results;
+}
+
+/**
+ * ایک نیا کورس شامل کریں یا موجودہ کو اپ ڈیٹ کریں۔
+ *
+ * @param array $data کورس ڈیٹا۔
+ * @param int $id کورس ID (نئے کورس کے لیے 0)۔
+ * @return int|bool داخل کردہ/اپ ڈیٹ کردہ ID یا ناکامی پر false۔
+ */
+public static function save_course( $data, $id = 0 ) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'bssms_courses';
+
+    // ڈیٹا کو سینیٹائز کریں
+    $insert_data = array(
+        'course_name_en' => sanitize_text_field( $data['course_name_en'] ),
+        'course_name_ur' => sanitize_text_field( $data['course_name_ur'] ),
+        'course_fee'     => absint( $data['course_fee'] ),
+        'is_active'      => absint( $data['is_active'] ),
+    );
+
+    $format = array( '%s', '%s', '%d', '%d' );
+
+    if ( $id > 0 ) {
+        // اپ ڈیٹ
+        $updated = $wpdb->update( $table, $insert_data, array( 'id' => $id ), $format, array( '%d' ) );
+        return $updated !== false ? $id : false;
+    } else {
+        // شامل کریں (Insert)
+        $inserted = $wpdb->insert( $table, $insert_data, $format );
+        return $inserted ? $wpdb->insert_id : false;
+    }
+}
+
+/**
+ * ایک کورس کو حذف کریں (قاعدہ 7: Prepared SQL)
+ *
+ * @param int $id کورس ID۔
+ * @return bool
+ */
+public static function delete_course( $id ) {
+    global $wpdb;
+    $table = $wpdb->prefix . 'bssms_courses';
+
+    // طالب علموں کے ریکارڈ کی جانچ کریں جو اس کورس پر منحصر ہیں (سیکیورٹی گارڈ)
+    $tbl_admissions = $wpdb->prefix . 'bssms_admissions';
+    $is_used = $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(id) FROM $tbl_admissions WHERE course_id = %d", $id ) );
+
+    if ($is_used > 0) {
+        // اگر کورس استعمال ہو رہا ہے تو حذف کرنے کی بجائے غیر فعال (Inactive) کر دیں۔
+        return $wpdb->update( $table, array( 'is_active' => 0 ), array( 'id' => $id ), array( '%d' ), array( '%d' ) ) !== false;
+    }
+
+    // اگر استعمال نہیں ہو رہا تو حذف کریں
+    $deleted = $wpdb->delete(
+        $table,
+        array( 'id' => absint( $id ) ),
+        array( '%d' )
+    );
+
+    return (bool) $deleted;
+}
+
+// ✅ Syntax verified block end
