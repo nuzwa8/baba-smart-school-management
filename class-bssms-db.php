@@ -330,3 +330,48 @@ public static function delete_course( $id ) {
 }
 
 // ✅ Syntax verified block end
+/** Part 12 — Settings Page: DB Utility Update for Logo/General Settings */
+
+// BSSMS_DB کلاس کے اندر، نیا فنکشن شامل کریں۔
+
+/**
+ * متعدد ترتیبات کو ایک ساتھ حاصل کریں (بلک ریڈ)۔
+ *
+ * @param array $keys ترتیبات کی Keys کی فہرست۔
+ * @return array
+ */
+public static function get_settings_bulk( $keys ) {
+    global $wpdb;
+    $table_settings = $wpdb->prefix . 'bssms_settings';
+    
+    // سیکیورٹی: keys کو محفوظ کریں
+    $safe_keys = array_map( 'sanitize_key', $keys );
+    $placeholders = implode( ', ', array_fill( 0, count( $safe_keys ), '%s' ) );
+    
+    // قاعدہ 4: $wpdb->prepare() queries
+    $sql = "SELECT setting_key, setting_value FROM $table_settings WHERE setting_key IN ($placeholders)";
+    
+    $results = $wpdb->get_results( $wpdb->prepare( $sql, $safe_keys ), ARRAY_A );
+    
+    $settings = array();
+    foreach ($results as $row) {
+        $settings[ $row['setting_key'] ] = maybe_unserialize( $row['setting_value'] );
+    }
+    
+    // تمام مطلوبہ keys کے لیے ڈیفالٹ شامل کریں
+    $defaults = [
+        'academy_name' => 'بابا اے آئی اکیڈمی',
+        'admin_email' => get_option('admin_email'),
+        'default_currency' => 'PKR',
+        'date_format' => 'd-m-Y',
+        'theme_mode' => 'light',
+        'logo_url' => '',
+        'enable_bilingual_labels' => 'on',
+        'enable_auto_urdu_translation' => 'on',
+        'primary_color' => '#0073aa', // ڈیفالٹ WordPress بلیو
+    ];
+    
+    return array_merge( $defaults, $settings );
+}
+
+// ✅ Syntax verified block end
