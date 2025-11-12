@@ -8,7 +8,7 @@
 /* 🟢 یہاں سے CSS Tokens شروع ہو رہے ہیں */
 :root {
     /* 🎨 بنیادی رنگ ٹوکنز - Light Mode Defaults */
-    --bssms-color-primary: #0073aa; /* WordPress Blue */
+    --bssms-color-primary: #0073aa; /* WordPress Blue (Initial Default) */
     --bssms-color-secondary: #00874c; /* Academy Green */
     --bssms-color-success: #4caf50;
     --bssms-color-error: #f44336;
@@ -37,7 +37,6 @@ body.bssms-dark-mode {
     --bssms-bg-card: #2c2c2c;
     --bssms-color-text: #e0e0e0;
     --bssms-color-border: #555555;
-    --bssms-color-primary: #4ab4ff; /* Lightened primary for contrast */
 }
 
 /* 🔴 یہاں پر CSS Tokens ختم ہو رہے ہیں */
@@ -45,7 +44,6 @@ body.bssms-dark-mode {
 /* 🟢 یہاں سے Namespace Styles شروع ہو رہے ہیں */
 
 .wrap {
-    /* WordPress wrap container */
     padding: var(--bssms-spacing-md);
     background-color: var(--bssms-bg-page);
     color: var(--bssms-color-text);
@@ -77,7 +75,6 @@ body.bssms-dark-mode {
     margin-bottom: var(--bssms-spacing-xs);
     font-weight: 600;
     color: var(--bssms-color-text);
-    /* قاعدہ 7: Accessibility */
 }
 
 .bssms-input, .bssms-select, .bssms-textarea {
@@ -87,7 +84,7 @@ body.bssms-dark-mode {
     border-radius: 4px;
     background-color: var(--bssms-bg-card);
     color: var(--bssms-color-text);
-    box-sizing: border-box; /* اہم */
+    box-sizing: border-box;
 }
 
 /* قاعدہ 7: Focus Ring + Tab Order */
@@ -111,17 +108,28 @@ body.bssms-dark-mode {
 
 .bssms-btn-primary {
     background-color: var(--bssms-color-primary);
-    color: var(--bssms-bg-card); /* White/Light text */
+    color: var(--bssms-bg-card);
 }
 
 .bssms-btn-primary:hover {
-    background-color: #005a87; /* Slightly darker */
+    background-color: color-mix(in srgb, var(--bssms-color-primary) 80%, black 20%);
+}
+
+.bssms-btn-secondary {
+    background-color: var(--bssms-color-border);
+    color: var(--bssms-color-text);
+    border-color: var(--bssms-color-border);
+}
+
+.bssms-btn-info {
+    background-color: #3498db;
+    color: white;
 }
 
 /* --- نوٹیفکیشن میسجز --- */
 .bssms-message-container {
     position: fixed;
-    top: 30px; /* Admin bar کے نیچے */
+    top: 30px;
     right: 20px;
     max-width: 400px;
     z-index: 9999;
@@ -133,18 +141,23 @@ body.bssms-dark-mode {
     border-radius: 4px;
     display: flex;
     align-items: center;
+    position: relative;
 }
 
 .bssms-message-success { background-color: #e8f5e9; color: #1b5e20; border-left: 5px solid var(--bssms-color-success); }
 .bssms-message-error { background-color: #ffebee; color: #b71c1c; border-left: 5px solid var(--bssms-color-error); }
 .bssms-message-critical { background-color: #ffccbc; color: #e64a19; border-left: 5px solid var(--bssms-color-error); }
+.bssms-message-info { background-color: #e3f2fd; color: #0d47a1; border-left: 5px solid #3498db; }
 
-/* --- RTL سپورٹ --- */
-/* WordPress Admin میں RTL خود ہی لاگو ہوتا ہے، لیکن ہم flexbox کو الٹا کریں گے جہاں ضروری ہو۔ */
-.bssms-rtl .bssms-form-row {
-    direction: rtl; /* صرف متن پر اثر انداز ہو سکتا ہے، مزید مخصوص فلیکس آئٹم کی ضرورت ہو گی۔ */
+.bssms-message-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2em;
+    margin-left: var(--bssms-spacing-md);
+    opacity: 0.7;
 }
 
 /* 🔴 یہاں پر Namespace Styles ختم ہو رہے ہیں */
 
-/* ✅ Syntax verified block end */
+/* ✅ Syntax verified block end
